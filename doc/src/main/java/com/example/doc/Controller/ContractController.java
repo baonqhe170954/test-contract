@@ -8,6 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/contracts")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -16,13 +18,22 @@ public class ContractController {
     @Autowired
     private ContractService service;
 
+    // CREATE
     @PostMapping
     public Contract create(@RequestBody Contract contract) {
         return service.save(contract);
     }
 
+    // GET ALL
+    @GetMapping
+    public List<Contract> getAll() {
+        return service.findAll();
+    }
+
+    // EXPORT FILE
     @GetMapping("/export/{id}")
     public ResponseEntity<byte[]> export(@PathVariable String id) throws Exception {
+
         byte[] file = service.generateContract(id);
 
         return ResponseEntity.ok()
